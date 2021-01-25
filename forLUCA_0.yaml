@@ -1,0 +1,20 @@
+# Name of the ouput image in /net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/
+# This name has to correspond with what is in the IDL script /year1/deepfields/power_spectrum_halos/make_halo.pro
+name: 'forLUCA' 
+redshift: 0.383    # for conversion r_e in kpc to r_e in pixels. Not used if r_e_pixel=True
+scale: 1.5         # one pixel is this many arcseconds
+shape: [1730,1730] # shape of the image
+oncluster: False   # Whether to use x0 y0 on cluster or off cluster
+x0_on: 682   # pixel position if on cluster
+y0_on: 758   # pixel position if on cluster
+x0_off: 558  # pixel position if not centered on cluster
+y0_off: 1324 # pixel position if not centered on cluster
+modelimage: './PSZ2G059.18+32.91_image_9' # Which model img to overwrite. Omit the '-MFS-image.fits' part
+alpha: -1.3 # spectral index of halo
+I0_units: 7.6184878060511074e-06 # central surface brightness in Jy/arcsec2
+r_e_pixel: True #whether r_e is given in pixels or in kpc
+r_e: 24.089313691579687 #in this case it is pixels
+i: 0 # version number.
+channelsout: 6
+# List of Measurement Sets where halo will be injected
+mslist: ['/data2/osinga/forLUCA/P258+35_PSZ2G059.18+32.91.dysco.sub.shift.avg.weights.ms.archive0.calibrated','P261+35_PSZ2G059.18+32.91.dysco.sub.shift.avg.weights.ms.archive0.calibrated']
