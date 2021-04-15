@@ -515,6 +515,7 @@ def inject_fake_halo(x0, y0, I0_units, r_e_pixel, r_e, redshift, scale, shape
     if psfluct:
         # Run the IDL script to add the powerspectrum fluctuations.
         # Make sure a function is hardcoded into this script
+        write_IDL_script(params)
         run_IDL_script(params)
 
     # Now we need to call another python script since it has to be run inside the
