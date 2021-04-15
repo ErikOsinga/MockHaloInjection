@@ -417,7 +417,7 @@ def write_IDL_script(params):
             write += "outim2='-model.fits'\n"
             write += "; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)\n"
             write += "; ADD PS FLUCT TO MODEL CHANNEL IMAGES\n"
-            write += "for modnum=0, %i do begin\n"%(params['channelsout'])
+            write += "for modnum=0, %i do begin\n"%(params['channelsout']-1)
             write += "  anim=anim1+STRTRIM(modnum,1)+anim2\n"
             write += "  outim=outim1+STRTRIM(modnum,1)+outim2\n"
             write += "  print, 'Doing ',outim\n"
