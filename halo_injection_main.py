@@ -353,6 +353,103 @@ def thismslist():
     mslist = ['/data2/osinga/inject_halo_recovery/LOCKMAN_MCXCJ1036.1+5713_try2.dysco.sub.shift.avg.weights.ms.archive0.calibrated']
     return mslist
 
+def write_IDL_script(params):
+    """
+    Write the IDL script from within python.
+
+    Actually only appends the function we need to run to test.pro
+    unless it already exists.
+    """
+
+    # Name of function in make_halo.pro that is executed.
+    # Dots are not allowed and neither are +
+    torun = params['name'].replace('.','_')
+    torun = torun.replace('+','_')
+    torun += '_it%i'%(params['i'])
+
+    with open('./make_halo.pro', 'a+') as f:
+        lines = f.readlines()
+        # Check if the function already exists
+        exists = False
+        for line in lines:
+            if torun in line:
+                exists = True
+
+        if exists:
+            print ("WARNING: Function %s already exists in IDL script"%torun)
+            print ("!!! Not updating parameters !!!")
+
+        else:
+            print ("Writing function %s to IDL script"%torun)
+
+            # template power spectrum fluctuations
+            miro = '/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_256_5_127.fits'
+
+            # conversion kpc to arcsec
+            scale = cosmo.kpc_proper_per_arcmin(redshift).value/60
+            # # Need r_e in kpc for the IDL script
+            if params['r_e_pixel']:
+                r_e_pix = params['r_e']
+                r_e = pixcoord_to_kpc(r_e_pix, params['scale'], params['redshift'])
+            else:
+                r_e = params['r_e']
+
+            # Use on-cluster coordinates or off-cluster coordinates
+            if params['oncluster']:
+                outname_end = 'inject_%i'%(params['i'])
+                x0, y0 = params['x0_on'], params['y0_on']
+            else:
+                outname_end = 'inject_%i_off'%(params['i'])
+                x0, y0 = params['x0_off'], params['y0_off']
+
+
+            write  = "\n\npro %s\n"%torun
+            write += "; anim1 is the model image that was overwritten with the analytical halo\n"
+            write += "; same image as 'modelimage' in the .yaml file\n"
+            write += "anim1='%s'\n"%params['modelimage']
+            write += "anim2='-model.fits'\n"
+            # Final output MODEL image of halo with PS fluctuations
+            outimage = params['modelimage'].split('/')
+            outimage.insert(-1,'OUT')
+            outimage = '/'.join(outimage)
+            outimage += '_it%i'%(params['i'])
+            write += "outim1='%s'\n"%outimage
+            write += "outim2='-model.fits'\n"
+            write += "; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)\n"
+            write += "; ADD PS FLUCT TO MODEL CHANNEL IMAGES\n"
+            write += "for modnum=0, %i do begin\n"%(params['channelsout']+1)
+            write += "  anim=anim1+STRTRIM(modnum,1)+anim2\n"
+            write += "  outim=outim1+STRTRIM(modnum,1)+outim2\n"
+            write += "  print, 'Doing ',outim\n"
+            write += "  fake_halo_ps, analytic=anim,miro='%s',pixel=%.1f,scale=%.3f,re=%.1f,xc=%i,yc=%i,outfile=outim\n"%(miro,params['scale'],scale,r_e,x0, y0)
+            write += "end\n\n"
+            write += "end"
+
+            f.write(write)
+
+            # e.g.,:
+            """
+            pro haloinject0
+            ; anim1 is the model image that was overwritten with the analytical halo
+            ; same image as 'modelimage' in the .yaml file
+            anim1='/net/bovenrijn/data1/digennaro/HighRedshiftClusters/uGMRT/HaloInjection/PSZ2G160.83+81.66/PSZ2G160.83+81.66_maskROBUST-0.5uvmin80'
+            anim2='-model.fits'
+            outim1='/net/bovenrijn/data1/digennaro/HighRedshiftClusters/uGMRT/HaloInjection/PSZ2G160.83+81.66/OUT/upperlimit_PSZ2G160.83+81.66_maskROBUST-0.5uvmin80'
+            outim2='-model.fits'
+
+            ; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)
+            ; ADD PS FLUCT TO MODEL 0 to 6
+            for modnum=0, 5 do begin
+              anim=anim1+STRTRIM(modnum,1)+anim2
+              outim=outim1+STRTRIM(modnum,1)+outim2
+              print, 'Doing ',outim
+              fake_halo_ps, analytic=anim,miro='/net/bovenrijn/data1/digennaro/HighRedshiftClusters/uGMRT/HaloInjection/PSZ2G160.83+81.66/OUT/maps_256_5_127.fits',pixel=1.,scale=7.865,re=110.,xc=2003,yc=1902,outfile=outim
+            end
+
+
+            end
+            """
+
 def run_IDL_script(params):
     """
     Run the IDL script from within python using pIDLy
@@ -361,7 +458,9 @@ def run_IDL_script(params):
     # Name of function in make_halo.pro that is executed. Hardcoded function.
     # Need to edit:
     # the pixel scale, the redshift scale, r_e in kpc, xc, yc and the outim1.
-    torun = 'haloinject%i'%(params['i']) 
+    torun = params['name'].replace('.','_')
+    torun = torun.replace('+','_')
+    torun += '_it%i'%(params['i'])
 
     print ("Running %s in IDL"%torun)
     # Open idl

@@ -75,12 +75,6 @@ writefits,outputname,b,head_halo
 end
 
 
-
-
-
-
-
-
 ;takes the halo generated above (analytic halo) and a map of kolmogorov flutuation generated with MIRO,
 ;1)  matches the 2 maps by nesting the miro map into a larger map 
 ;2) computes the normalization parameters for each radius to have that
@@ -175,9 +169,6 @@ end
 
 
 
-
-
-
 pro example
 
 
@@ -200,227 +191,9 @@ fake_halo_ps,analytic='erik_map.fits',miro='./OUT/map_miro.fits',pixel=1.5,scale
 end
 
 
-
-pro WHL1
-
-; FOR THE FIRST WHL cluster WHLJ160425.6+543307.fits
-; ON CLUSTER COORDS  xc=679,yc=502
-; OFF CLUSTER COORDS xc=546,yc=506
-
-anim1='/net/achterrijn/data2/osinga/cluster_pointsource_sub/WHLJ160425.6+543307/WHLJ160425.6+543307_maskROBUST-0.5_TEMP-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/WHLJ160425.6+543307-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.086,re=065.,xc=546,yc=506,outfile=outim
-end
-
-
-end
-
-
-pro WHL2
-
-; FOR THE SECOND WHL cluster WHLJ161135.9+541635.fits
-anim1='/net/nederrijn/data1/osinga/cluster_pointsource_sub/WHLJ161135.9+541635/WHLJ161135.9+541635_maskROBUST-0.5_TEMP-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/WHLJ161135.9+541635-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.854,re=080.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-pro WHL2off
-
-; FOR THE SECOND WHL cluster WHLJ161135.9+541635.fits OFF CLUSTER
-anim1='/net/nederrijn/data1/osinga/cluster_pointsource_sub/WHLJ161135.9+541635/WHLJ161135.9+541635_maskROBUST-0.5_TEMP-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/WHLJ161135.9+541635-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.854,re=080.,xc=1049,yc=813,outfile=outim
-end
-
-
-end
-
-
-
-pro WHL3
-
-; FOR THE LAST WHL cluster WHLJ161420.1+544254.fits
-anim1='/net/nederrijn/data1/osinga/cluster_pointsource_sub/WHLJ161420.1+544254/WHLJ161420.1+544254_TEMP-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/WHLJ161420.1+544254-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.726,re=065.,xc=405,yc=1000,outfile=outim
-end
-
-
-end
-
-
-pro nightinject1
-
-; FOR THE INJECTION GAME. r_e=65kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=065.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-
-pro nightinject2
-
-; FOR THE INJECTION GAME. r_e=65kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=065.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-pro nightinject3
-
-; FOR THE INJECTION GAME. r_e=65kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=065.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-
-pro nightinject4
-
-; FOR THE INJECTION GAME. r_e=80kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=080.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-pro nightinject5
-
-; FOR THE INJECTION GAME. r_e=100kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=100.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-pro nightinject6
-; FOR THE INJECTION GAME. r_e=120kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=120.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-
-pro nightinject7
-; FOR THE INJECTION GAME. r_e=65kpc
-anim1='/net/achterrijn/data2/osinga/inject_halo_recovery/MCXCJ1036.1+5713_1night_maskROBUST-0.5-000'
-anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/MCXCJ1036.1+5713_1night-000'
-outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
-for modnum=0, 5 do begin
-  anim=anim1+STRTRIM(modnum,1)+anim2
-  outim=outim1+STRTRIM(modnum,1)+outim2
-  print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=4.454,re=065.,xc=1194,yc=844,outfile=outim
-end
-
-
-end
-
-
 pro haloinject0
 ; anim1 is the model image that was overwritten with the analytical halo
+; same image as 'modelimage' in the .yaml file
 anim1='/net/achterrijn/data2/osinga/forLUCA/PSZ2G059.18+32.91_image_9-000'
 anim2='-model.fits'
 outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/forLUCA-000'
@@ -428,6 +201,8 @@ outim2='-model.fits'
 
 ; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)
 ; ADD PS FLUCT TO MODEL 0 to 6
+; r_e is in kpc
+; xc and yc is halo location
 for modnum=0, 5 do begin
   anim=anim1+STRTRIM(modnum,1)+anim2
   outim=outim1+STRTRIM(modnum,1)+outim2
@@ -439,21 +214,20 @@ end
 end
 
 
-
-pro PSZRX
-; FOR THE UPPER LIM PSZRX
-anim1='/net/lofar7/data2/osinga/cluster_pointsource_sub/PSZRXG084.01+46.28/PSZRXG084.01+46.28_TEMP-000'
+pro PSZ2G160_83_81_66_it0
+; anim1 is the model image that was overwritten with the analytical halo
+; same image as 'modelimage' in the .yaml file
+anim1='/net/bovenrijn/data1/digennaro/HighRedshiftClusters/uGMRT/HaloInjection/PSZ2G160.83+81.66/PSZ2G160.83+81.66_maskROBUST-0.5uvmin80'
 anim2='-model.fits'
-outim1='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/PSZRXG084.01+46.28-000'
+outim1='/net/bovenrijn/data1/digennaro/HighRedshiftClusters/uGMRT/HaloInjection/PSZ2G160.83+81.66/OUT/PSZ2G160.83+81.66_maskROBUST-0.5uvmin80_it0'
 outim2='-model.fits'
-
-; ADD PS FLUCT TO MODEL 0 to 6
+; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)
+; ADD PS FLUCT TO MODEL CHANNEL IMAGES
 for modnum=0, 5 do begin
   anim=anim1+STRTRIM(modnum,1)+anim2
   outim=outim1+STRTRIM(modnum,1)+outim2
   print, 'Doing ',outim
-  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_128_5_63.fits',pixel=1.5,scale=1.292,re=65.,xc=470,yc=730,outfile=outim
+  fake_halo_ps, analytic=anim,miro='/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/maps_256_5_127.fits',pixel=1.0,scale=7.761,re=14.0,xc=2003,yc=1902,outfile=outim
 end
-
 
 end
