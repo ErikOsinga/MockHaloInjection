@@ -413,7 +413,7 @@ def write_IDL_script(params):
             outimage.insert(-1,'OUT')
             outimage = '/'.join(outimage)
             outimage += '_it%i'%(params['i'])
-            write += "outim1='%s'\n"%outimage
+            write += "outim1='%s-000'\n"%outimage
             write += "outim2='-model.fits'\n"
             write += "; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)\n"
             write += "; ADD PS FLUCT TO MODEL CHANNEL IMAGES\n"
