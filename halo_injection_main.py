@@ -406,7 +406,7 @@ def write_IDL_script(params):
             write  = "\n\npro %s\n"%torun
             write += "; anim1 is the model image that was overwritten with the analytical halo\n"
             write += "; same image as 'modelimage' in the .yaml file\n"
-            write += "anim1='%s'\n"%params['modelimage']
+            write += "anim1='%s-000'\n"%params['modelimage']
             write += "anim2='-model.fits'\n"
             # Final output MODEL image of halo with PS fluctuations
             outimage = params['modelimage'].split('/')
@@ -417,7 +417,7 @@ def write_IDL_script(params):
             write += "outim2='-model.fits'\n"
             write += "; scale is calculated with cosmo.kpc_proper_per_arcmin(redshift).value/60 (i.e., proper kpc per arcsec)\n"
             write += "; ADD PS FLUCT TO MODEL CHANNEL IMAGES\n"
-            write += "for modnum=0, %i do begin\n"%(params['channelsout']+1)
+            write += "for modnum=0, %i do begin\n"%(params['channelsout'])
             write += "  anim=anim1+STRTRIM(modnum,1)+anim2\n"
             write += "  outim=outim1+STRTRIM(modnum,1)+outim2\n"
             write += "  print, 'Doing ',outim\n"
@@ -503,6 +503,10 @@ def inject_fake_halo(x0, y0, I0_units, r_e_pixel, r_e, redshift, scale, shape
     # arcsec**-2 to pix**-2 is a factor scale**2
     I0 = I0_units*(scale**2) # Translate to Jy/pix**2
     print ("Which is I0=%f muJy/pix"%(I0*1e6))
+
+    d = 2.6
+    totflux = 2*np.pi*I0*r_e_pix**2*(1-np.exp(-d)*(d+1))
+    print ("Total flux injected within %.1f r_e=%.2f mJy"%(d,totflux*1e3))
 
     # The theoretical halo model    
     modeldata = circle_model(I0, x0, y0, r_e_pix, shape)
