@@ -186,12 +186,22 @@ def read_parameter_file(paramfile):
 
 if __name__ == '__main__':
 
+    
     paramfile = str(sys.argv[1])
     params = read_parameter_file(paramfile)
-    
-    PFmodel = '/net/reusel/data1/osinga/phd/MockHaloInjection/OUT/'
-    # PFmodel = '/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/'
-    PFmodel += params['name'] 
+
+    psfluct = params['psfluct'] 
+
+    if psfluct:
+        PFmodel = '/net/reusel/data1/osinga/phd/MockHaloInjection/OUT/'
+        # PFmodel = '/net/reusel/data1/osinga/phd/year1/deepfields/power_spectrum_halos/OUT/'
+        PFmodel += params['name'] 
+
+    else:
+        print ("Assuming no power spectrum fluctuations")
+        modelimage = params['modelimage'] # which model image to overwrite with halo
+        # No power spectrum fluctuations, just use regular model.
+        PFmodel = modelimage
 
     i = params['i']
 
@@ -205,7 +215,7 @@ if __name__ == '__main__':
     print ("Doing cluster %s, i=%i"%(params['name'],params['i']))
     print ("Doing wsclean predict, add and imaging step. Should be called from halo_injection_main.py")
     
-    # Predict the new model image WITH Power spectrum Fluctuations 
+    # Predict the new model image WITH or WITHOUT Power spectrum Fluctuations 
     # to the MODEL_DATA column of the mslist mses
     wsclean_predict(PFmodel, params['mslist'])
     # Add the model data column to the CORRECTED_DATA or DATA column 

@@ -554,25 +554,28 @@ if True:
     makeimage(mslist, imageout +'_maskROBUST-0.5TAPER15', pixsize, imsize, channelsout=args['channelsout'], niter=np.int(niter/2), robust=-0.5, minuv=minuv, multiscale=True, predict=False, fitsmask=fitsmask, deepmultiscale=False,uvtaper=15.0)
 
 
-
+    """
 
     #  --------------------------------------------------
-    #  --- make the taper 30arcsec image ----
+    #  --- make the taper 50arcsec image ----
     #  --------------------------------------------------
-    makeimage(mslist, imageout + '_ROBUST-0.5TAPER30', pixsize, imsize, channelsout=args['channelsout'], niter=np.int(niter/2), robust=-0.5, minuv=minuv, predict=False, uvtaper=30.0)
+    makeimage(mslist, imageout + '_ROBUST-0.5TAPER50', pixsize, imsize, channelsout=args['channelsout'], niter=np.int(niter/2), robust=-0.5, minuv=minuv, predict=False, uvtaper=50.0)
 
     # make a mask
-    imagename  = imageout +  '_ROBUST-0.5TAPER30' +'-MFS-image.fits'
+    imagename  = imageout +  '_ROBUST-0.5TAPER50' +'-MFS-image.fits'
     cmdm  = makemask + ' --Th='+ str(args['maskthreshold']) + ' --RestoredIm=' + imagename
     print cmdm
     os.system(cmdm)
     fitsmask = imagename + '.mask.fits'
 
     # re-image with mask
-    makeimage(mslist, imageout +'_maskROBUST-0.5TAPER30', pixsize, imsize, channelsout=args['channelsout'], niter=np.int(niter/2), robust=-0.5, minuv=minuv, multiscale=True, predict=False, fitsmask=fitsmask, deepmultiscale=False,uvtaper=30.0)
+    makeimage(mslist, imageout +'_maskROBUST-0.5TAPER50', pixsize, imsize, channelsout=args['channelsout'], niter=np.int(niter/2), robust=-0.5, minuv=minuv, multiscale=True, predict=False, fitsmask=fitsmask, deepmultiscale=False,uvtaper=50.0)
+
 
 
 if args['z'] >0. : # otherwise cannot computer compute_taper(z)
+    print ("Making kpc taper images")
+    """
     #  --------------------------------------------------
     #  --- make the taper 25 kpc image ----
     #  --------------------------------------------------

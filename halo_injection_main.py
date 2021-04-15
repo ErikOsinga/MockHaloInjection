@@ -184,6 +184,21 @@ def kpc_to_pixcoord(r_e, scale, redshift):
 
     return r_e_pix
 
+def pixcoord_to_kpc(r_e_pix, scale, redshift):
+    """
+    Given r_e in pixcoords, return r_e in kpc
+
+    r_e      -- in kpc
+    scale    -- conversion 1 pixel = ? arcsec
+    redshift -- 
+
+    """
+    kpcamin = cosmo.kpc_proper_per_arcmin(redshift)
+    r_e_in_asec = r_e_pix*scale*u.arcsec
+    r_e = (kpcamin*r_e_in_asec).to(u.kpc)
+
+    return r_e_pix
+
 def create_model_image(data, originalmodel,channelsout=6):
     """
     Create a number of model images equal to 'channelsout'. Opens the original
@@ -359,7 +374,7 @@ def run_IDL_script(params):
     idl.close()
 
 def inject_fake_halo(x0, y0, I0_units, r_e_pixel, r_e, redshift, scale, shape
-    ,modelimage, mslist, outname_end,channelsout,alpha=-1.5):
+    ,modelimage, mslist, outname_end,channelsout, alpha, psfluct):
     """
     Creates a theoretical halo to add to the CORRECTED_DATA or DATA column
     A new column is created called 'UPPER_LIM'.
@@ -398,8 +413,10 @@ def inject_fake_halo(x0, y0, I0_units, r_e_pixel, r_e, redshift, scale, shape
     create_model_image(modeldata, modelimage)
     # Overwrite the MFS model image as well
     make_MFS_image(modeldata, modelimage, channelsout=channelsout)
-    # Run the IDL script to add the powerspectrum fluctuations.
-    run_IDL_script(params)
+    if psfluct:
+        # Run the IDL script to add the powerspectrum fluctuations.
+        # Make sure a function is hardcoded into this script
+        run_IDL_script(params)
 
     # Now we need to call another python script since it has to be run inside the
     # singularity image. But cannot run entire script inside sing image because
@@ -508,12 +525,17 @@ if __name__ == '__main__':
     r_e_pixel = params['r_e_pixel']
     r_e = params['r_e']      
     channelsout = params['channelsout']
-    alpha = params['alpha']  
+    alpha = params['alpha'] 
+    psfluct = params['psfluct'] 
 
     print ("Doing cluster %s, i=%i"%(params['name'],params['i']))
+    if psfluct:
+        print ("Adding power spectrum fluctuations")
+    else:
+        print ("Not adding power spectrum fluctuations")
 
     inject_fake_halo(x0, y0, I0_units, r_e_pixel, r_e, redshift, scale, shape, modelimage, mslist
-        , outname_end, channelsout, alpha)
+        , outname_end, channelsout, alpha, psfluct)
 
 
 
