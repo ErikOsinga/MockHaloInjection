@@ -151,14 +151,19 @@ def model_spectral_index(data, originalmodel, channelsout=6, alpha=-1.5):
         newmodel[i] = data*( (chanfreq/centralfreq)**alpha)
     return newmodel
 
-def make_MFS_image(data, model, channelsout=6):
+def make_MFS_image(data, model, channelsout=4):
     """
     Once the channel model images have been made, average them to 
     create the MFS image. (Just simple averaging)
     """
     omodel = model+'-MFS-model.fits'
     with fits.open(omodel, mode='update') as hdul:
-        averaged = np.zeros(hdul[0].data.shape)
+        shape = hdul[0].data.shape
+        if len(shape) == 4:
+            # remove first two empty channels
+            shape = shape[2:]
+
+        averaged = np.zeros(shape)
         # Open all the channel images. Average them
         for i in range(0,channelsout):
             omodel = model+'-{0:04}-model.fits'.format(i)

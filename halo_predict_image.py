@@ -154,21 +154,24 @@ def save_params_header(outname):
 
 def image_and_pssub(params):
     imsize = params['shape'][0]
-    niter = 50000 # default
+    niter = 25000 # default
     channelsout = params['channelsout']
     minuv = 80 # default
     pixelscale = params['scale']
     redshift = params['redshift']
-    sourceLLS = 0.4 # Mpc
+    sourceLLS = 0.5 # Mpc
     outname = params['name']
+    mses = ' '.join(params['mslist'])
 
 
-    cmd = 'python '
-    cmd += ' /net/reusel/data1/osinga/phd/MockHaloInjection/run_imaging.py'
+    cmd = 'python'
+    cmd += ' ./run_imaging.py'
     cmd += ' --imsize %i -n %i --channelsout %i --minuv %.5f'%(imsize,niter,channelsout,minuv)
     cmd += ' --pixelscale %.1f --sourceLLS %.2f --z %.3f'%(pixelscale,sourceLLS,redshift)
+    cmd += ' --weighting ROBUST-0.5'
+    cmd += ' --array uGMRT'
     cmd += ' -i %s_%i'%(outname,params['i'])
-    cmd += ' --maskthreshold 3 ./*calibrated*'
+    cmd += ' --maskthreshold 3 %s'%mses
 
     print (cmd)
     os.system(cmd)
