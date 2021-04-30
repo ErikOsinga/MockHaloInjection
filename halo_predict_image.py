@@ -176,6 +176,29 @@ def image_and_pssub(params):
     print (cmd)
     os.system(cmd)
 
+def copy_injected_mses(params, outdir):
+    """
+    After we're done, save the ms with the injected halo column
+    to directory 'outdir'
+    
+    Make sure outdir is a function of iteration number, otherwise they will be
+    overwitten again anyways
+    """
+
+    if (not os.path.exists(outdir)):
+        print ("Creating directories where MSes are saved")
+        print (outdir)
+        os.system('mkdir -p %s'%outdir)
+
+    print ("Copying injected MSes to output directory %s"%outdir)
+
+    for ms in params['mslist']:
+        cmd = 'cp -r'
+        cmd += ' %s'%ms
+        cmd += ' %s'%(outdir)
+        print(cmd)
+        os.system(cmd)
+
 def read_parameter_file(paramfile):
     """
     Read parameters from a yaml file
@@ -225,4 +248,6 @@ if __name__ == '__main__':
     add_predict_to_data(params['mslist'])
     print ("Done adding predict to CORRECTED DATA. DOING IMAGING AND PS SUB NOW.")
     image_and_pssub(params)
+    outdir = './%s/'%params['name'] +  'inject_%i/'%params['i']
+    copy_injected_mses(params, outdir)    
     print ("Done with i=%i. Can run Halo-FDCA now."%params['i'])
